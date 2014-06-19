@@ -1,8 +1,9 @@
 
+# Built application files
 *.apk
 *.ap_
 
-# files for the dex VM
+# Files for the Dalvik VM
 *.dex
 
 # Java class files
@@ -40,3 +41,4 @@ gradle.properties
 
 # Mac OS .DS_Store file
 .DS_Store
+
