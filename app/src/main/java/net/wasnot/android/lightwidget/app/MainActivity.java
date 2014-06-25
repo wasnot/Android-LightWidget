@@ -1,9 +1,13 @@
 package net.wasnot.android.lightwidget.app;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -12,6 +16,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.inject(this);
     }
 
 
@@ -32,5 +37,17 @@ public class MainActivity extends ActionBarActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @OnClick({R.id.startButton, R.id.stopButton})
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.startButton:
+                LightFloatService.startService(this);
+                break;
+            case R.id.stopButton:
+                LightFloatService.stopService(this);
+                break;
+        }
     }
 }

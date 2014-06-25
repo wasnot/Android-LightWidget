@@ -4,5 +4,7 @@
     <string name="app_name">LightWidget</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="switchon">on</string>
+    <string name="switchoff">off</string>
 
 </resources>

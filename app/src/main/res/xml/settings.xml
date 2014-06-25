@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:switchpref="http://schemas.android.com/apk/res-auto">
+
+    <org.jraf.android.backport.switchwidget.SwitchPreference
+            android:key="testKey"
+            android:title="SwitchPreference Test"
+            switchpref:switchTextOff="@string/switchoff"
+            switchpref:switchTextOn="@string/switchon"/>
+</PreferenceScreen>
