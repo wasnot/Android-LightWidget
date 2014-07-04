@@ -7,23 +7,16 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.PixelFormat;
 import android.os.IBinder;
 import android.os.SystemClock;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.LinkedList;
 
 public class LightFloatService extends Service {
+
     private final static String TAG = LightFloatService.class.getSimpleName();
-    private final static String ACTION_SHOW_WIDGET = "net.wasnot.android.lightwidget.ACTION_SHOW_WIDGET";
+    private final static String ACTION_SHOW_WIDGET
+            = "net.wasnot.android.lightwidget.ACTION_SHOW_WIDGET";
     private final static String ACTION_DISMISS_WIDGET
             = "net.wasnot.android.lightwidget.ACTION_DISMISS_WIDGET";
     int retryInterval = 5;
@@ -48,15 +41,14 @@ public class LightFloatService extends Service {
         }
         String action = intent.getAction();
         if (ACTION_SHOW_WIDGET.equals(action)) {
-//                startForeground(1, NotificationUtil.sendNotification(
-//                        this, 1, "伝言", mNowMessage.message, false));
-                mManager.showLockMessage();
-                setAlarm();
+            startForeground(1, NotificationUtil.makeNotification(this));
+            mManager.showLockMessage();
+            setAlarm();
         } else if (ACTION_DISMISS_WIDGET.equals(action)) {
             mManager.dissmissLockMessage();
-                cancelAlarm();
-                stopSelf();
-                stopForeground(false);
+            cancelAlarm();
+            stopSelf();
+            stopForeground(false);
         }
         return super.onStartCommand(intent, flags, startId);
     }

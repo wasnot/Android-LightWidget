@@ -10,17 +10,38 @@ import android.view.WindowManager;
  */
 public class BrightnessUtil {
 
-    public static int getBrightnessLevel(Context con) {
+    private static int getBrightness(Context con) {
 // 端末画面の明るさを取得(0～255)
         String valueStr = Settings.System.getString(con.getContentResolver(), "screen_brightness");
-// Toast.makeText(con, "brightness:" + valueStr,
-// Toast.LENGTH_SHORT).show();
-        int value = 150;
         try {
-            value = Integer.parseInt(valueStr);
+            return Integer.parseInt(valueStr);
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
+        return 0;
+    }
+
+    public static float getBrightnessRate(Context con) {
+        int value = getBrightness(con);
+        return value / 255f;
+    }
+
+    public static void setBrightness(Context con, int percent, Window win) {
+        float rate = percent / 100f;
+        if (rate > 1) {
+            rate = 1f;
+        } else if (rate < 0) {
+            rate = 0f;
+        }
+        int value = (int) (255 * rate);
+        Settings.System.putInt(con.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, value);
+        if (win != null) {
+            setBrightnessInApp(win, rate);
+        }
+    }
+
+    public static int getBrightnessLevel(Context con) {
+        int value = getBrightness(con);
         if (value > 150) {
             return 2;
         } else if (value > 80) {

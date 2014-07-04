@@ -1,22 +1,60 @@
 package net.wasnot.android.lightwidget.app;
 
+import android.content.ClipData;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.DragEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 
 import butterknife.ButterKnife;
+import butterknife.InjectView;
 import butterknife.OnClick;
 
 
 public class MainActivity extends ActionBarActivity {
+
+    @InjectView(R.id.dragButton)
+    public View dragButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
+        dragButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                    ClipData data = ClipData.newPlainText(
+                            "msg", "Please drop to robot."); // 【1】
+                    v.startDrag(data, new View.DragShadowBuilder(v), null, 0); // 【2】
+                    return true;
+                }
+                return false;
+            }
+        });
+        dragButton.setOnDragListener(new View.OnDragListener() {
+            @Override
+            public boolean onDrag(View v, DragEvent event) {
+                switch (event.getAction()) {
+                    case DragEvent.ACTION_DRAG_STARTED:
+                        break;
+                    case DragEvent.ACTION_DRAG_ENDED:
+                        // 終了位置を取得、それによってアレする
+                        float x = event.getX();
+                        float y = event.getY();
+                        break;
+                    case DragEvent.ACTION_DRAG_EXITED:
+                        break;
+                    default:
+                        break;
+                }
+                return false;
+            }
+        });
     }
 
 
