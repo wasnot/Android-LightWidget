@@ -5,16 +5,23 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content">
 
-    <Button
+    <LinearLayout
+            android:id="@+id/expandable"
+            android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="close"
-            android:id="@+id/button"/>
-    <net.wasnot.android.lightwidget.app.view.VerticalSeekBar
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"
-            android:id="@+id/seekBar"
-            android:layout_gravity="center_horizontal"/>
+            android:visibility="gone">
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="close"
+                android:id="@+id/button"/>
+        <net.wasnot.android.lightwidget.app.view.VerticalSeekBar
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:id="@+id/seekBar"
+                android:layout_gravity="center_horizontal"/>
+    </LinearLayout>
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

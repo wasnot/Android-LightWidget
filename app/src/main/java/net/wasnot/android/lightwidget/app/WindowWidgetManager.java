@@ -56,7 +56,9 @@ public class WindowWidgetManager
 // LogUtil.e(TAG, "lock is " + kgm.inKeyguardRestrictedInputMode());
 // if (kgm.inKeyguardRestrictedInputMode()) {
         mView = mLayoutInflater.inflate(R.layout.layout_float_simple, null);
-        mView.findViewById(R.id.dragButton).setOnTouchListener(this);
+        View drag = mView.findViewById(R.id.dragButton);
+        drag.setOnTouchListener(this);
+        drag.setOnClickListener(this);
         View button = mView.findViewById(R.id.button);
         button.setOnClickListener(this);
         button.setOnLongClickListener(this);
@@ -82,9 +84,24 @@ public class WindowWidgetManager
 
     @Override
     public void onClick(View v) {
-        String text = "メッセージを確認できたらボタンを長押ししてください";
-        Toast.makeText(mLayoutInflater.getContext(), text, Toast.LENGTH_SHORT).show();
-        ((TextView) v).setError(text);
+        switch (v.getId()) {
+            case R.id.button:
+                String text = "メッセージを確認できたらボタンを長押ししてください";
+                Toast.makeText(mLayoutInflater.getContext(), text, Toast.LENGTH_SHORT).show();
+                ((TextView) v).setError(text);
+                break;
+            case R.id.dragButton:
+                View e = mView.findViewById(R.id.expandable);
+                if (e.getVisibility() == View.GONE) {
+                    e.setVisibility(View.VISIBLE);
+                } else {
+                    e.setVisibility(View.GONE);
+                }
+//                mXRate += (event.getX() - v.getWidth() / 2) / mSize.x;
+                mYRate += (v.getPivotX() + v.getHeight() / 2) / mSize.y;
+                mWindowManager.updateViewLayout(mView, makeLayoutParams());
+                break;
+        }
     }
 
     @Override
@@ -122,7 +139,23 @@ public class WindowWidgetManager
             case MotionEvent.ACTION_UP:
                 mTouchDownX = 0;
                 mTouchDownY = 0;
-                break;
+                if (mYRate * mSize.y > mXRate * mSize.x||(1-mYRate)*mSize.y>(1-mXRate)*mSize.x) {
+                    if (mXRate > 0.5) {
+                        mXRate = 1;
+                    }
+                    if (mXRate <= 0.5) {
+                        mXRate = 0;
+                    }
+                } else {
+                    if (mYRate > 0.5) {
+                        mYRate = 1;
+                    }
+                    if (mYRate <= 0.5) {
+                        mYRate = 0;
+                    }
+                }
+                mWindowManager.updateViewLayout(mView, makeLayoutParams());
+                return true;
         }
         return false;
     }
@@ -163,6 +196,7 @@ public class WindowWidgetManager
 //                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
 //                | WindowManager.LayoutParams.FLAG_DIM_BEHIND
                 | WindowManager.LayoutParams.FLAG_FULLSCREEN
+                | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
 //| WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
                 | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                 | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
@@ -170,5 +204,9 @@ public class WindowWidgetManager
 //        params.dimAmount = 0.6f;
         params.screenBrightness = mBrightness;
         return params;
+    }
+
+    private void updateViewPosition() {
+
     }
 }
