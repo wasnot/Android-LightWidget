@@ -1,9 +1,5 @@
 package net.wasnot.android.lightwidget.app;
 
-import net.wasnot.android.lightwidget.app.utils.BrightnessUtil;
-import net.wasnot.android.lightwidget.app.utils.DisplayUtil;
-import net.wasnot.android.lightwidget.app.utils.LogUtil;
-
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
@@ -15,6 +11,9 @@ import android.view.WindowManager;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import net.wasnot.android.lightwidget.app.utils.BrightnessUtil;
+import net.wasnot.android.lightwidget.app.utils.DisplayUtil;
+import net.wasnot.android.lightwidget.app.utils.LogUtil;
 
 /**
  * Created by aidaakihiro on 2014/06/21.
@@ -102,6 +101,7 @@ public class WindowWidgetManager
                 mWindowManager.updateViewLayout(mView, makeLayoutParams());
                 break;
         }
+
     }
 
     @Override
@@ -139,7 +139,8 @@ public class WindowWidgetManager
             case MotionEvent.ACTION_UP:
                 mTouchDownX = 0;
                 mTouchDownY = 0;
-                if (mYRate * mSize.y > mXRate * mSize.x||(1-mYRate)*mSize.y>(1-mXRate)*mSize.x) {
+                if (mYRate * mSize.y > mXRate * mSize.x
+                        || (1 - mYRate) * mSize.y > (1 - mXRate) * mSize.x) {
                     if (mXRate > 0.5) {
                         mXRate = 1;
                     }
